@@ -10,12 +10,18 @@ public class PlayerController : MonoBehaviour
 
     private bool isFacingRight = true;
     private bool isWalking;
+    private bool isGrounded;
 
     private Rigidbody2D rb;
     private Animator anim;
 
     public float moveSpeed = 0.5f;
     public float jumpForce = 0.3f;
+    public float groundCheckRadius;
+
+    public Transform groundCheck;
+
+    public LayerMask whatIsGround;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +43,12 @@ public class PlayerController : MonoBehaviour
         ApplyMovement();
     }
 
+    private void CheckSurroundings()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround)
+    }
+
+    // flips the character based on which way youre going
     private void CheckMovementDirection()
     {
         if(isFacingRight && movementInputDirection < 0)
@@ -48,6 +60,7 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
 
+        // animation updates
         if(rb.velocity.x != 0)
         {
             isWalking = true;
