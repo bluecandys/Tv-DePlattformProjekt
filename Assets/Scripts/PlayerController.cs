@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     private bool isFacingRight = true;
     private Rigidbody2D rb;
 
-    public float moveSpeed = 10.0f;
+    public float moveSpeed = 0.5f;
+    public float jumpForce = 0.3f;
 
     // Start is called before the first frame update
     void Start()
@@ -46,8 +47,17 @@ public class PlayerController : MonoBehaviour
     private void CheckInput()
     {
         movementInputDirection = Input.GetAxisRaw("Horizontal");
+
+        if(Input.GetButtonDown("Jump"))
+        {
+            Jump();
+        }
     }
 
+    private void Jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+    }
     private void ApplyMovement()
     {
         rb.velocity = new Vector2(moveSpeed * movementInputDirection, rb.velocity.y);
